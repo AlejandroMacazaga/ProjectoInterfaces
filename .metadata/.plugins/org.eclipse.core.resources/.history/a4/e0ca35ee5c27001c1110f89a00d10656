@@ -1,0 +1,24 @@
+package view;
+
+import javax.swing.*;
+
+
+public class VentanaPrincipal extends JFrame {
+	
+	private JButton btnDeporte, btnDeportista, btnEquipo, btnEvento, btnOlimpiada, btnParticipacion;
+	private JButton btnAniadir, btnModificar, btnBorrar;
+	public VentanaPrincipal() {
+		draw();
+		listen();
+	}
+	
+	private void draw() {
+		
+	}
+	
+	private void listen() {
+		
+	}
+	
+	
+}

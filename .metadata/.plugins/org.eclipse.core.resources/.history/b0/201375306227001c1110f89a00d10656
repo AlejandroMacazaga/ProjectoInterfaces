@@ -1,0 +1,86 @@
+package dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import auxiliares.Participacion;
+
+public class ParticipacionesDAO {
+static final private String tablename = "Participacion";
+	
+	static public ArrayList<Participacion> getAllParticipaciones() throws SQLException {
+		ArrayList<Participacion> listParticipaciones = new ArrayList<Participacion>();
+		ConexionDB conn = new ConexionDB();
+		String sql = "select id_deportista, id_evento, id_equipo, edad, medalla from " + tablename;
+		ResultSet resultado = conn.ejecutarConsulta(sql);
+		while(resultado.next()) {
+			listParticipaciones.add(new Participacion(
+					));
+		}
+		conn.cerrarConexion();
+		return listParticipaciones;
+	}
+	
+	static public boolean removeParticipacion(Participacion p) {
+		String sql = "delete from " + tablename + " where id_deportista = ? and id_evento = ? and id_equipo = ?";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, p.getDeportista().getId_deportista());
+			ps.setInt(2, p.getEvento().getId_evento());
+			ps.setInt(3, p.getEquipo().getId_equipo());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+	
+	static public boolean addParticipacion(Participacion p) {
+		String sql = "insert into "+ tablename + " (id_deportista, id_evento, id_equipo, edad, medalla) values (?, ?, ?, ?, '?')";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, p.getDeportista().getId_deportista());
+			ps.setInt(2, p.getEvento().getId_evento());
+			ps.setInt(3, p.getId_equipo());
+			ps.setInt(4, p.getEdad());
+			ps.setString(5, p.getMedalla());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+	
+	static public boolean modifyParticipacion(Participacion p) {
+		String sql = "update " + tablename + " set edad = ?, medalla = '?' where id_deportista = ? and id_evento = ? and id_equipo = ?";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, p.getEdad());
+			ps.setString(2, p.getMedalla());
+			ps.setInt(3, p.getId_deportista());
+			ps.setInt(4, p.getId_evento());
+			ps.setInt(5, p.getId_equipo());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+}

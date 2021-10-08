@@ -17,9 +17,9 @@ static final private String tablename = "Participacion";
 		ResultSet resultado = conn.ejecutarConsulta(sql);
 		while(resultado.next()) {
 			listParticipaciones.add(new Participacion(
-					resultado.getInt("id_deportista"),
-					resultado.getInt("id_evento"),
-					resultado.getInt("id_equipo"),
+					EventosDAO.getEvento(resultado.getInt("id_evento")),
+					DeportistasDAO.getDeportista(resultado.getInt("id_deportista")),
+					EquiposDAO.getEquipo(resultado.getInt("id_equipo")),
 					resultado.getInt("edad"),
 					resultado.getString("medalla")));
 		}
@@ -33,9 +33,9 @@ static final private String tablename = "Participacion";
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-			ps.setInt(1, p.getId_deportista());
-			ps.setInt(2, p.getId_evento());
-			ps.setInt(3, p.getId_equipo());
+			ps.setInt(1, p.getDeportista().getId_deportista());
+			ps.setInt(2, p.getEvento().getId_evento());
+			ps.setInt(3, p.getEquipo().getId_equipo());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -52,9 +52,9 @@ static final private String tablename = "Participacion";
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-			ps.setInt(1, p.getId_deportista());
-			ps.setInt(2, p.getId_evento());
-			ps.setInt(3, p.getId_equipo());
+			ps.setInt(1, p.getDeportista().getId_deportista());
+			ps.setInt(2, p.getEvento().getId_evento());
+			ps.setInt(3, p.getEquipo().getId_equipo());
 			ps.setInt(4, p.getEdad());
 			ps.setString(5, p.getMedalla());
 			if(ps.executeUpdate() > 0) success = true;
@@ -75,9 +75,9 @@ static final private String tablename = "Participacion";
 			PreparedStatement ps = conn.getPreparedStatement(sql);
 			ps.setInt(1, p.getEdad());
 			ps.setString(2, p.getMedalla());
-			ps.setInt(3, p.getId_deportista());
-			ps.setInt(4, p.getId_evento());
-			ps.setInt(5, p.getId_equipo());
+			ps.setInt(3, p.getDeportista().getId_deportista());
+			ps.setInt(4, p.getEvento().getId_evento());
+			ps.setInt(5, p.getEquipo().getId_equipo());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();

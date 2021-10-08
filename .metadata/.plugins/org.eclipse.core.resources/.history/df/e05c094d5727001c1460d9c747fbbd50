@@ -1,0 +1,84 @@
+package dao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import auxiliares.Participacion;
+
+public class ParticipacionesDAO {
+static final private String tablename = "Participacion";
+	
+	static public ArrayList<Participacion> getAllParticipaciones() throws SQLException {
+		ArrayList<Participacion> listParticipaciones = new ArrayList<Participacion>();
+		ConexionDB conn = new ConexionDB();
+		String sql = "select  from " + tablename;
+		ResultSet resultado = conn.ejecutarConsulta(sql);
+		while(resultado.next()) {
+			listParticipaciones.add(new Participacion(
+					));
+		}
+		conn.cerrarConexion();
+		return listParticipaciones;
+	}
+	
+	static public boolean removeParticipacion(Participacion p) {
+		String sql = "delete from " + tablename + " where id_deportista = ? and id_evento = ? and id_equipo = ?";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, p.getId_deportista());
+			ps.setInt(2, p.getId_evento());
+			ps.setInt(3, p.getId_equipo());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+	
+	static public boolean addParticipacion(Participacion p) {
+		String sql = "insert into "+ tablename + " (id_evento, nombre, id_olimpiada, id_deporte) values (?, '?', ?, ?)";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, e.getId_evento());
+			ps.setString(2, e.getNombre());
+			ps.setInt(3, e.getId_olimpiada());
+			ps.setInt(4, e.getId_deporte());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+	
+	static public boolean modifyParticipacion(Evento e) {
+		String sql = "update " + tablename + " set nombre = '?', id_olimpiada = ?, id_deporte = ?  where id_evento = ?";
+		boolean success = false;
+		try {
+			ConexionDB conn = new ConexionDB();
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setString(1, e.getNombre());
+			ps.setInt(2, e.getId_olimpiada());
+			ps.setInt(3, e.getId_deporte());
+			ps.setInt(4, e.getId_evento());
+			if(ps.executeUpdate() > 0) success = true;
+			ps.close();
+			conn.cerrarConexion();
+		}
+		catch(SQLException ex) {
+			return false;
+		}
+		return success;
+	}
+}

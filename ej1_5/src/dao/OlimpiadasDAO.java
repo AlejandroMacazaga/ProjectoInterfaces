@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import auxiliares.Olimpiada;
 
 public class OlimpiadasDAO {
-	static final private String tablename = "Olimpiada";
+	private final static String tablename = "Olimpiada";
 	
-	static public ArrayList<Olimpiada> getAllOlimpiadas() throws SQLException {
+	public static ArrayList<Olimpiada> getAllOlimpiadas() throws SQLException {
 		ArrayList<Olimpiada> listOlimpiadas = new ArrayList<Olimpiada>();
 		ConexionDB conn = new ConexionDB();
 		String sql = "select id_olimpiada, nombre, anio, temporada, ciudad from " + tablename;
@@ -28,7 +28,7 @@ public class OlimpiadasDAO {
 		return listOlimpiadas;
 	}
 	
-	static public boolean removeOlimpiada(Olimpiada o) {
+	public static boolean removeOlimpiada(Olimpiada o) {
 		String sql = "delete from " + tablename + " where id_olimpiada = ?";
 		boolean success = false;
 		try {
@@ -45,7 +45,7 @@ public class OlimpiadasDAO {
 		return success;
 	}
 	
-	static public boolean addOlimpiada(Olimpiada o) {
+	public static boolean addOlimpiada(Olimpiada o) {
 		String sql = "insert into "+ tablename + " (id_olimpiada, nombre, anio, temporada, ciudad) values (?, '?', '?', '?', '?')";
 		boolean success = false;
 		try {
@@ -66,7 +66,7 @@ public class OlimpiadasDAO {
 		return success;
 	}
 	
-	static public boolean modifyOlimpiada(Olimpiada o) {
+	public static boolean modifyOlimpiada(Olimpiada o) {
 		String sql = "update " + tablename + " set nombre = '?', anio = '?', temporada = '?', ciudad = '?' where id_olimpiada = ?";
 		boolean success = false;
 		try {

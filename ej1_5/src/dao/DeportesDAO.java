@@ -7,9 +7,9 @@ import auxiliares.Deporte;
 
 public class DeportesDAO {
 	
-		static public String tablename = "Deporte";
+		public final static String tablename = "Deporte";
 		
-		static public ArrayList<Deporte> getAllDeportes() throws SQLException {
+		public static ArrayList<Deporte> getAllDeportes() throws SQLException {
 			ArrayList<Deporte> listDeportes = new ArrayList<Deporte>();
 			ConexionDB conn = new ConexionDB();
 			String sql = "select id_deporte, nombre from " + tablename;
@@ -21,7 +21,7 @@ public class DeportesDAO {
 			return listDeportes;
 		}
 		
-		static public boolean removeDeporte(Deporte d) {
+		public static boolean removeDeporte(Deporte d) {
 			String sql = "delete from " + tablename + " where id_deporte = ?";
 			boolean success = false;
 			try {
@@ -38,7 +38,7 @@ public class DeportesDAO {
 			return success;
 		}
 		
-		static public boolean addDeporte(Deporte d) {
+		public static boolean addDeporte(Deporte d) {
 			String sql = "insert into " + tablename + " (id_deporte, nombre) values (?, '?')";
 			boolean success = false;
 			try {
@@ -56,7 +56,7 @@ public class DeportesDAO {
 			return success;
 		}
 		
-		static public boolean modifyDeporte(Deporte d) {
+		public static boolean modifyDeporte(Deporte d) {
 			String sql = "update " + tablename + " set nombre = '?' where id_deporte = ?";
 			boolean success = false;
 			try {

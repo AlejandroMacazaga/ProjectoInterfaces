@@ -1,37 +1,44 @@
 package auxiliares;
 
 public class Participacion {
-	private int id_deportista, id_evento, id_equipo;
+	private Evento evento;
+	private Deportista deportista;
+	private Equipo equipo;
 	private int edad;
 	private String medalla;
 	
-	public Participacion(int id_deportista, int id_evento, int id_equipo, int edad, String medalla) {
-		this.id_deportista = id_deportista;
-		this.id_evento = id_evento;
-		this.id_equipo = id_equipo;
+	public Participacion(Evento evento, Deportista deportista, Equipo equipo, int edad, String medalla) {
+		this.evento = evento;
+		this.deportista = deportista;
+		this.equipo = equipo;
 		this.edad = edad;
 		this.medalla = medalla;
 	}
 
-	
+
+
+
 	@Override
 	public String toString() {
-		return "deportista: " + id_deportista + ", evento:" + id_evento + ", equipo:" + id_equipo
+		return "deportista: " + deportista.getNombre() + ", evento:" + evento.getNombre() + ", equipo:" + equipo.getNombre()
 				+ ", edad:" + edad + ", medalla: " + medalla;
 	}
+
+	
 
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((deportista == null) ? 0 : deportista.hashCode());
 		result = prime * result + edad;
-		result = prime * result + id_deportista;
-		result = prime * result + id_equipo;
-		result = prime * result + id_evento;
+		result = prime * result + ((equipo == null) ? 0 : equipo.hashCode());
+		result = prime * result + ((evento == null) ? 0 : evento.hashCode());
 		result = prime * result + ((medalla == null) ? 0 : medalla.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -42,13 +49,22 @@ public class Participacion {
 		if (getClass() != obj.getClass())
 			return false;
 		Participacion other = (Participacion) obj;
+		if (deportista == null) {
+			if (other.deportista != null)
+				return false;
+		} else if (!deportista.equals(other.deportista))
+			return false;
 		if (edad != other.edad)
 			return false;
-		if (id_deportista != other.id_deportista)
+		if (equipo == null) {
+			if (other.equipo != null)
+				return false;
+		} else if (!equipo.equals(other.equipo))
 			return false;
-		if (id_equipo != other.id_equipo)
-			return false;
-		if (id_evento != other.id_evento)
+		if (evento == null) {
+			if (other.evento != null)
+				return false;
+		} else if (!evento.equals(other.evento))
 			return false;
 		if (medalla == null) {
 			if (other.medalla != null)
@@ -59,18 +75,18 @@ public class Participacion {
 	}
 
 
-	public int getId_deportista() {
-		return id_deportista;
+	public Deportista getDeportista() {
+		return deportista;
 	}
 
 
-	public int getId_evento() {
-		return id_evento;
+	public Evento getEvento() {
+		return evento;
 	}
 
 
-	public int getId_equipo() {
-		return id_equipo;
+	public Equipo getEquipo() {
+		return equipo;
 	}
 
 

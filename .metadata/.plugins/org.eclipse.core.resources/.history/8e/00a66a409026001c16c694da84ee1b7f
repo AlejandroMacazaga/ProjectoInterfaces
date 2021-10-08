@@ -1,0 +1,12 @@
+package auxiliares;
+
+public class Participacion {
+	private int id_deportista, id_evento, id_equipo;
+	private int edad;
+	private String medalla;
+	
+	public Participacion(int id_deportista, int id_evento, int id_equipo, int edad, int medalla) {
+		
+	}
+	
+}

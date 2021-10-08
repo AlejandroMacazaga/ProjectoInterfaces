@@ -1,0 +1,14 @@
+package auxiliares;
+
+public class Deporte {
+	private int id;
+	private String nombre;
+	
+	public Deporte(String deporte) {
+		
+	}
+	
+	public Deporte(int id, String deporte) {
+		
+	}
+}

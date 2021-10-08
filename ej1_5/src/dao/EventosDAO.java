@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import auxiliares.Evento;
 
 public class EventosDAO {
-	static final private String tablename = "Evento";
+	private final static String tablename = "Evento";
 	
-	static public ArrayList<Evento> getAllEventos() throws SQLException {
+	public static ArrayList<Evento> getAllEventos() throws SQLException {
 		ArrayList<Evento> listDeportistas = new ArrayList<Evento>();
 		ConexionDB conn = new ConexionDB();
 		String sql = "select id_evento, nombre, id_olimpiada, id_deporte from " + tablename;
@@ -18,15 +18,31 @@ public class EventosDAO {
 		while(resultado.next()) {
 			listDeportistas.add(new Evento(
 					resultado.getInt("id_evento"),
-					resultado.getInt("id_olimpiada"),
-					resultado.getInt("id_deporte"),
+					OlimpiadasDAO.getOlimpiada(resultado.getInt("id_olimpiada")),
+					DeportesDAO.getDeporte(resultado.getInt("id_deporte")),
 					resultado.getString("nombre")));
 		}
 		conn.cerrarConexion();
 		return listDeportistas;
 	}
 	
-	static public boolean removeEvento(Evento e) {
+	public static Evento getEvento(int id_evento) {
+		Evento e = null;
+		ConexionDB conn = new ConexionDB();
+		String sql = "select id_olimpiada, id_deporte, nombre from " + tablename + " where id_evento = " + id_evento;
+		ResultSet resultado = conn.ejecutarConsulta(sql);
+		if(resultado.next()) {
+			e = new Evento(
+					id_evento,
+					OlimpiadasDAO.getOlimpiada(resultado.getInt("id_olimpiada")),
+					DeportesDAO.getDeporte(resultado.getInt("id_deporte")),
+					resultado.getString("nombre"));
+		}
+		conn.cerrarConexion();
+		return e;
+	}
+	
+	public static boolean removeEvento(Evento e) {
 		String sql = "delete from " + tablename + " where id_evento = ?";
 		boolean success = false;
 		try {
@@ -43,7 +59,7 @@ public class EventosDAO {
 		return success;
 	}
 	
-	static public boolean addEvento(Evento e) {
+	public static boolean addEvento(Evento e) {
 		String sql = "insert into "+ tablename + " (id_evento, nombre, id_olimpiada, id_deporte) values (?, '?', ?, ?)";
 		boolean success = false;
 		try {
@@ -63,7 +79,7 @@ public class EventosDAO {
 		return success;
 	}
 	
-	static public boolean modifyEvento(Evento e) {
+	public static boolean modifyEvento(Evento e) {
 		String sql = "update " + tablename + " set nombre = '?', id_olimpiada = ?, id_deporte = ?  where id_evento = ?";
 		boolean success = false;
 		try {

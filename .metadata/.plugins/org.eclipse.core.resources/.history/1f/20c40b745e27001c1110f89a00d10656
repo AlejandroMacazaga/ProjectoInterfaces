@@ -1,0 +1,48 @@
+package view;
+
+import java.awt.FlowLayout;
+
+import javax.swing.*;
+
+
+public class VentanaPrincipal extends JFrame {
+	
+	private JButton btnDeporte, btnDeportista, btnEquipo, btnEvento, btnOlimpiada, btnParticipacion;
+	private JButton btnAniadir, btnModificar, btnEliminar;
+	
+	public VentanaPrincipal() {
+		draw();
+		listen();
+		setSize(500, 500);
+		setVisible(true);
+	}
+	
+	private void draw() {
+		this.getContentPane().setLayout(new FlowLayout());
+		JPanel panelBotones = new JPanel();
+		panelBotones.setLayout(new FlowLayout());
+		this.getContentPane().add(panelBotones);
+		btnDeporte = new JButton("Deporte");
+		panelBotones.add(btnDeporte);
+		btnDeportista = new JButton("Deportista");
+		panelBotones.add(btnDeportista);
+		this.getContentPane().add(btnDeportista);
+		btnEquipo = new JButton("Equipo");
+		this.getContentPane().add(btnEquipo);
+		btnOlimpiada = new JButton("Olimpiada");
+		this.getContentPane().add(btnOlimpiada);
+		btnEvento = new JButton("Evento");
+		this.getContentPane().add(btnEvento);
+		btnParticipacion = new JButton("btnParticipacion");
+		this.getContentPane().add(btnParticipacion);
+	}
+	
+	private void listen() {
+		
+	}
+	
+	public static void main(String[] args) {
+		new VentanaPrincipal();
+	}
+	
+}

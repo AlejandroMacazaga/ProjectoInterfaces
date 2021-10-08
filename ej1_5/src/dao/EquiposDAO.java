@@ -5,12 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import auxiliares.Deportista;
 import auxiliares.Equipo;
+import auxiliares.Evento;
 
 public class EquiposDAO {
-	static final private String tablename = "Equipo";
+	private final static String tablename = "Equipo";
 	
-	static public ArrayList<Equipo> getAllEquipos() throws SQLException {
+	public static ArrayList<Equipo> getAllEquipos() throws SQLException {
 		ArrayList<Equipo> listEquipos = new ArrayList<Equipo>();
 		ConexionDB conn = new ConexionDB();
 		String sql = "select id_equipo, nombre, iniciales from " + tablename;
@@ -22,7 +24,22 @@ public class EquiposDAO {
 		return listEquipos;
 	}
 	
-	static public boolean removeEquipo(Equipo e) {
+	public static Equipo getEquipo(int id_equipo) throws SQLException {
+		Equipo e = null;
+		ConexionDB conn = new ConexionDB();
+		String sql = "select nombre, iniciales from " + tablename + " where id_equipo = " + id_equipo;
+		ResultSet resultado = conn.ejecutarConsulta(sql);
+		if(resultado.next()) {
+			e = new Equipo(
+					id_equipo,
+					resultado.getString("nombre"),
+					resultado.getString("iniciales"));
+		}
+		conn.cerrarConexion();
+		return e;
+	}
+	
+	public static boolean removeEquipo(Equipo e) {
 		String sql = "delete from " + tablename + " where id_equipo = ?";
 		boolean success = false;
 		try {
@@ -39,7 +56,7 @@ public class EquiposDAO {
 		return success;
 	}
 	
-	static public boolean addDeporte(Equipo e) {
+	public static boolean addDeporte(Equipo e) {
 		String sql = "insert into " + tablename + " () values (?)";
 		boolean success = false;
 		try {
@@ -74,4 +91,5 @@ public class EquiposDAO {
 		}
 		return success;
 	}
+
 }

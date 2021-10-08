@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import auxiliares.Deportista;
 
 public class DeportistasDAO {
-	static final private String tablename = "Deportista";
+	private final static String tablename = "Deportista";
 	
-	static public ArrayList<Deportista> getAllDeportistas() throws SQLException {
+	public static ArrayList<Deportista> getAllDeportistas() throws SQLException {
 		ArrayList<Deportista> listDeportistas = new ArrayList<Deportista>();
 		ConexionDB conn = new ConexionDB();
 		String sql = "select id_deportista, nombre, sexo, peso, altura from " + tablename;
@@ -27,7 +27,24 @@ public class DeportistasDAO {
 		return listDeportistas;
 	}
 	
-	static public boolean removeDeportista(Deportista d) {
+	public static Deportista getDeportista(int id_deportista) throws SQLException {
+		Deportista d = null;
+		ConexionDB conn = new ConexionDB();
+		String sql = "select nombre, sexo, peso, altura from " + tablename + " where id_deportista = " + id_deportista;
+		ResultSet resultado = conn.ejecutarConsulta(sql);
+		if(resultado.next()) {
+			d = new Deportista(
+					id_deportista,
+					resultado.getString("nombre"),
+					resultado.getString("sexo").charAt(0),
+					resultado.getInt("peso"),
+					resultado.getInt("altura"));
+		}
+		conn.cerrarConexion();
+		return d;
+	}
+	
+	public static boolean removeDeportista(Deportista d) {
 		String sql = "delete from " + tablename + " where id_deportista = ?";
 		boolean success = false;
 		try {
@@ -44,7 +61,7 @@ public class DeportistasDAO {
 		return success;
 	}
 	
-	static public boolean addDeportista(Deportista d) {
+	public static boolean addDeportista(Deportista d) {
 		String sql = "insert into "+ tablename + " (id_deportista, nombre, sexo, peso, altura) values (?, '?', '?', ?, ?)";
 		boolean success = false;
 		try {
@@ -65,7 +82,7 @@ public class DeportistasDAO {
 		return success;
 	}
 	
-	static public boolean modifyDeportista(Deportista d) {
+	public static boolean modifyDeportista(Deportista d) {
 		String sql = "update " + tablename + " set nombre = '?', sexo = '?', peso = ?, altura = ? where id_deportista = ?";
 		boolean success = false;
 		try {
