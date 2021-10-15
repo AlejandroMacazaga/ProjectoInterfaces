@@ -51,6 +51,12 @@ public class Equipo {
 	public String getIniciales() {
 		return iniciales;
 	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setIniciales(String iniciales) {
+		this.iniciales = iniciales;
+	}
 	
 	
 }

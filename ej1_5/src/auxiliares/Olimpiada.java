@@ -86,6 +86,22 @@ public class Olimpiada {
 	public String getCiudad() {
 		return ciudad;
 	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+	public void setTemporada(String temporada) {
+		this.temporada = temporada;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
 	
 	
 	

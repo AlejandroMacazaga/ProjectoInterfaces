@@ -86,6 +86,22 @@ public class Deportista {
 		return altura;
 	}
 
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setSexo(char sexo) {
+		this.sexo = sexo;
+	}
+
+	public void setPeso(int peso) {
+		this.peso = peso;
+	}
+
+	public void setAltura(int altura) {
+		this.altura = altura;
+	}
+
 	
 	
 	

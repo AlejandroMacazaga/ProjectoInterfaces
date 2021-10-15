@@ -98,6 +98,41 @@ public class Participacion {
 	public String getMedalla() {
 		return medalla;
 	}
+
+
+
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+
+
+
+	public void setDeportista(Deportista deportista) {
+		this.deportista = deportista;
+	}
+
+
+
+
+	public void setEquipo(Equipo equipo) {
+		this.equipo = equipo;
+	}
+
+
+
+
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
+
+
+
+
+	public void setMedalla(String medalla) {
+		this.medalla = medalla;
+	}
 	
 	
 	

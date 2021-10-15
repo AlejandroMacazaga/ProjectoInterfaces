@@ -63,13 +63,14 @@ public class EquiposDAO {
 		return success;
 	}
 	
-	public static boolean addDeporte(Equipo e) {
-		String sql = "insert into " + tablename + " () values (?)";
+	public static boolean addEquipo(Equipo e) {
+		String sql = "insert into " + tablename + " (nombre, iniciales) values (?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-
+			ps.setString(1, e.getNombre());
+			ps.setString(2, e.getIniciales());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -81,7 +82,7 @@ public class EquiposDAO {
 	}
 	
 	static public boolean modifyEquipo(Equipo e) {
-		String sql = "update " + tablename + " set nombre = '?', iniciales = '?' where id_equipo = ?";
+		String sql = "update " + tablename + " set nombre = ?, iniciales = ' where id_equipo = ?";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

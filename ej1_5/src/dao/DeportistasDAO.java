@@ -69,16 +69,15 @@ public class DeportistasDAO {
 	}
 	
 	public static boolean addDeportista(Deportista d) {
-		String sql = "insert into "+ tablename + " (id_deportista, nombre, sexo, peso, altura) values (?, '?', '?', ?, ?)";
+		String sql = "insert into "+ tablename + " (nombre, sexo, peso, altura) values (?, ?, ?, ?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-			ps.setInt(1, d.getId_deportista());
-			ps.setString(2, d.getNombre());
-			ps.setString(3, d.getSexo() + "");
-			ps.setInt(4, d.getPeso());
-			ps.setInt(5, d.getAltura());
+			ps.setString(1, d.getNombre());
+			ps.setString(2, d.getSexo() + "");
+			ps.setInt(3, d.getPeso());
+			ps.setInt(4, d.getAltura());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -90,7 +89,7 @@ public class DeportistasDAO {
 	}
 	
 	public static boolean modifyDeportista(Deportista d) {
-		String sql = "update " + tablename + " set nombre = '?', sexo = '?', peso = ?, altura = ? where id_deportista = ?";
+		String sql = "update " + tablename + " set nombre = ?, sexo = ?, peso = ?, altura = ? where id_deportista = ?";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

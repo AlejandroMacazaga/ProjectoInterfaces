@@ -67,15 +67,14 @@ public class EventosDAO {
 	}
 	
 	public static boolean addEvento(Evento e) {
-		String sql = "insert into "+ tablename + " (id_evento, nombre, id_olimpiada, id_deporte) values (?, '?', ?, ?)";
+		String sql = "insert into "+ tablename + " (nombre, id_olimpiada, id_deporte) values (?, ?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-			ps.setInt(1, e.getId_evento());
-			ps.setString(2, e.getNombre());
-			ps.setInt(3, e.getOlimpiada().getId_olimpiada());
-			ps.setInt(4, e.getDeporte().getId_deporte());
+			ps.setString(1, e.getNombre());
+			ps.setInt(2, e.getOlimpiada().getId_olimpiada());
+			ps.setInt(3, e.getDeporte().getId_deporte());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -87,7 +86,7 @@ public class EventosDAO {
 	}
 	
 	public static boolean modifyEvento(Evento e) {
-		String sql = "update " + tablename + " set nombre = '?', id_olimpiada = ?, id_deporte = ?  where id_evento = ?";
+		String sql = "update " + tablename + " set nombre = ?, id_olimpiada = ?, id_deporte = ?  where id_evento = ?";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

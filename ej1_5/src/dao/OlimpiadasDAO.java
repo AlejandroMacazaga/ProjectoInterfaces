@@ -71,16 +71,15 @@ public class OlimpiadasDAO {
 	}
 	
 	public static boolean addOlimpiada(Olimpiada o) {
-		String sql = "insert into "+ tablename + " (id_olimpiada, nombre, anio, temporada, ciudad) values (?, '?', '?', '?', '?')";
+		String sql = "insert into "+ tablename + " (nombre, anio, temporada, ciudad) values (?, ?, ?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
-			ps.setInt(1, o.getId_olimpiada());
-			ps.setString(2, o.getNombre());
-			ps.setString(3, o.getAnio());
-			ps.setString(4, o.getTemporada());
-			ps.setString(5, o.getCiudad());
+			ps.setString(1, o.getNombre());
+			ps.setString(2, o.getAnio());
+			ps.setString(3, o.getTemporada());
+			ps.setString(4, o.getCiudad());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -92,7 +91,7 @@ public class OlimpiadasDAO {
 	}
 	
 	public static boolean modifyOlimpiada(Olimpiada o) {
-		String sql = "update " + tablename + " set nombre = '?', anio = '?', temporada = '?', ciudad = '?' where id_olimpiada = ?";
+		String sql = "update " + tablename + " set nombre = ?, anio = ?, temporada = ?, ciudad = ? where id_olimpiada = ?";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

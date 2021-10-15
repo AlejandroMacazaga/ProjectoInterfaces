@@ -1,6 +1,0 @@
-package auxiliares;
-
-public class Participacion {
-	int id_deportista, id_evento, id_equipo;
-	int edad;
-}

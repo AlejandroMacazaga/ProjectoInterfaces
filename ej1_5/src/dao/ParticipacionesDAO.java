@@ -53,7 +53,7 @@ static final private String tablename = "Participacion";
 	}
 	
 	static public boolean addParticipacion(Participacion p) {
-		String sql = "insert into "+ tablename + " (id_deportista, id_evento, id_equipo, edad, medalla) values (?, ?, ?, ?, '?')";
+		String sql = "insert into "+ tablename + " (id_deportista, id_evento, id_equipo, edad, medalla) values (?, ?, ?, ?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();
@@ -74,7 +74,7 @@ static final private String tablename = "Participacion";
 	}
 	
 	static public boolean modifyParticipacion(Participacion p) {
-		String sql = "update " + tablename + " set edad = ?, medalla = '?' where id_deportista = ? and id_evento = ? and id_equipo = ?";
+		String sql = "update " + tablename + " set edad = ?, medalla = ? where id_deportista = ? and id_evento = ? and id_equipo = ?";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

@@ -61,7 +61,8 @@ public class DeportesDAO {
 		
 		public static boolean addDeporte(Deporte d) {
 			System.out.println("Terminada");
-			String sql = "insert into " + tablename + " (nombre) values ('?')";
+			String sql = "insert into " + tablename + " (nombre) values (?)";
+			System.out.println(sql);
 			boolean success = false;
 			try {
 				ConexionDB conn = new ConexionDB();
@@ -84,7 +85,7 @@ public class DeportesDAO {
 		}
 		
 		public static boolean modifyDeporte(Deporte d) {
-			String sql = "update " + tablename + " set nombre = '?' where id_deporte = ?";
+			String sql = "update " + tablename + " set nombre = ? where id_deporte = ?";
 			boolean success = false;
 			try {
 				ConexionDB conn = new ConexionDB();

@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -147,7 +148,6 @@ public class VentanaPrincipal extends JFrame {
 		mdl = new DefaultListModel<Deporte>();
 		ArrayList<Deporte> listaDeportes = DeportesDAO.getAllDeportes();
 		listaDeportes.forEach(deporte -> {
-			System.out.println("Añadiendo deporte");
 			mdl.addElement(deporte);
 		});
 		lst = new JList<Deporte>(mdl);
@@ -158,7 +158,7 @@ public class VentanaPrincipal extends JFrame {
 		pnlActual.add(pnlParametros, BorderLayout.NORTH);
 		
 		// Creamos todos los textfield para los parametros 
-		mapaParametros.put("nombre", new JTextField());
+		mapaParametros.put("Nombre", new JTextField());
 		pnlParametros.setLayout(new GridLayout(0, 2));
 		
 		// Los dibujamos
@@ -186,8 +186,7 @@ public class VentanaPrincipal extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JTextField txtField = mapaParametros.get("nombre");
-				String nombre = txtField.getText();
+				String nombre = mapaParametros.get("Nombre").getText();
 				Deporte d = new Deporte(-1, nombre);
 				if(DeportesDAO.addDeporte(d)) {
 					System.out.println("Se ha añadido");
@@ -195,10 +194,64 @@ public class VentanaPrincipal extends JFrame {
 				mdl.clear();
 				ArrayList<Deporte> listaDeportes = DeportesDAO.getAllDeportes();
 				listaDeportes.forEach(deporte -> {
-					System.out.println("Añadiendo deporte");
 					mdl.addElement(deporte);
 				});
-				
+				repaint();
+				revalidate();
+			}
+			
+		});
+		
+		btnModificar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Deporte selectedDeporte = (Deporte) lst.getSelectedValue();
+				if(selectedDeporte == null) {
+					JOptionPane.showMessageDialog(null, "Necesitas tener seleccionado el objeto a eliminar!!!");
+				}
+				else {
+					String nombre = mapaParametros.get("Nombre").getText();
+					if(nombre.equals("")) {
+						mensajeErrorVacio();
+					}
+					else {
+						selectedDeporte.setNombre(nombre);
+						DeportesDAO.modifyDeporte(selectedDeporte);
+						ArrayList<Deporte> listaDeportes = DeportesDAO.getAllDeportes();
+						mdl.clear();
+						listaDeportes.forEach(deporte -> {
+							mdl.addElement(deporte);
+						});
+					}
+				}
+				repaint();
+				revalidate();
+			}
+			
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Deporte selectedDeporte = (Deporte) lst.getSelectedValue();
+				if(selectedDeporte == null) {
+					JOptionPane.showMessageDialog(null, "Necesitas tener seleccionado el objeto a eliminar!!!");
+				}
+				else {
+					if(!DeportesDAO.removeDeporte(selectedDeporte)) {
+						JOptionPane.showMessageDialog(null, "Por favor, rellena todos los valores!!!");
+					}
+				}
+				ArrayList<Deporte> listaDeportes = DeportesDAO.getAllDeportes();
+				mdl.clear();
+				listaDeportes.forEach(deporte -> {
+					mdl.addElement(deporte);
+				});
+				repaint();
+				revalidate();
 			}
 			
 		});
@@ -213,7 +266,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		lst = new JList<Deportista>(mdl);
 		pnlActual.add(new JLabel("Deportista"));
-		
+		 
 		
 		
 		repaint();
@@ -332,7 +385,13 @@ public class VentanaPrincipal extends JFrame {
 		btnParticipacion.setEnabled(true);
 	}
 	
+	private void mensajeErrorVacio() {
+		JOptionPane.showMessageDialog(null, "Por favor, rellena todos los valores!!!");
+	}
 	
+	private void mensajeErrorBorrar() {
+		JOptionPane.showMessageDialog(null, "Imposible de eliminar!!!");
+	}
 	public static void main(String[] args) {
 		new VentanaPrincipal();
 	}
