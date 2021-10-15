@@ -12,15 +12,21 @@ import auxiliares.Evento;
 public class EquiposDAO {
 	private final static String tablename = "Equipo";
 	
-	public static ArrayList<Equipo> getAllEquipos() throws SQLException {
+	public static ArrayList<Equipo> getAllEquipos() {
 		ArrayList<Equipo> listEquipos = new ArrayList<Equipo>();
-		ConexionDB conn = new ConexionDB();
+		try {
+			ConexionDB conn = new ConexionDB();
 		String sql = "select id_equipo, nombre, iniciales from " + tablename;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
-		while(resultado.next()) {
-			listEquipos.add(new Equipo(resultado.getInt("id_equipo"), resultado.getString("nombre"), resultado.getString("iniciales")));
+			ResultSet resultado = conn.ejecutarConsulta(sql);
+			while(resultado.next()) {
+				listEquipos.add(new Equipo(resultado.getInt("id_equipo"), resultado.getString("nombre"), resultado.getString("iniciales")));
+			}
+			resultado.close();
+			conn.cerrarConexion();
+		} catch(SQLException ex) {
+			
 		}
-		conn.cerrarConexion();
+		System.out.println(listEquipos.toString());
 		return listEquipos;
 	}
 	
@@ -35,6 +41,7 @@ public class EquiposDAO {
 					resultado.getString("nombre"),
 					resultado.getString("iniciales"));
 		}
+		resultado.close();
 		conn.cerrarConexion();
 		return e;
 	}

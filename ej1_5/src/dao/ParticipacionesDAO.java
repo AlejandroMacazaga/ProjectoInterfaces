@@ -10,20 +10,26 @@ import auxiliares.Participacion;
 public class ParticipacionesDAO {
 static final private String tablename = "Participacion";
 	
-	static public ArrayList<Participacion> getAllParticipaciones() throws SQLException {
+	static public ArrayList<Participacion> getAllParticipaciones() {
 		ArrayList<Participacion> listParticipaciones = new ArrayList<Participacion>();
-		ConexionDB conn = new ConexionDB();
+		try {
+			ConexionDB conn = new ConexionDB();
 		String sql = "select id_deportista, id_evento, id_equipo, edad, medalla from " + tablename;
 		ResultSet resultado = conn.ejecutarConsulta(sql);
-		while(resultado.next()) {
-			listParticipaciones.add(new Participacion(
-					EventosDAO.getEvento(resultado.getInt("id_evento")),
-					DeportistasDAO.getDeportista(resultado.getInt("id_deportista")),
-					EquiposDAO.getEquipo(resultado.getInt("id_equipo")),
-					resultado.getInt("edad"),
-					resultado.getString("medalla")));
+			while(resultado.next()) {
+				listParticipaciones.add(new Participacion(
+						EventosDAO.getEvento(resultado.getInt("id_evento")),
+						DeportistasDAO.getDeportista(resultado.getInt("id_deportista")),
+						EquiposDAO.getEquipo(resultado.getInt("id_equipo")),
+						resultado.getInt("edad"),
+						resultado.getString("medalla")));
+			}
+			resultado.close();
+			conn.cerrarConexion();
+		} catch(SQLException ex) {
+			
 		}
-		conn.cerrarConexion();
+		System.out.println(listParticipaciones.toString());
 		return listParticipaciones;
 	}
 	
@@ -88,3 +94,4 @@ static final private String tablename = "Participacion";
 		return success;
 	}
 }
+

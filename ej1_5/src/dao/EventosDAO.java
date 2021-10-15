@@ -10,23 +10,29 @@ import auxiliares.Evento;
 public class EventosDAO {
 	private final static String tablename = "Evento";
 	
-	public static ArrayList<Evento> getAllEventos() throws SQLException {
-		ArrayList<Evento> listDeportistas = new ArrayList<Evento>();
-		ConexionDB conn = new ConexionDB();
-		String sql = "select id_evento, nombre, id_olimpiada, id_deporte from " + tablename;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
-		while(resultado.next()) {
-			listDeportistas.add(new Evento(
-					resultado.getInt("id_evento"),
-					OlimpiadasDAO.getOlimpiada(resultado.getInt("id_olimpiada")),
-					DeportesDAO.getDeporte(resultado.getInt("id_deporte")),
-					resultado.getString("nombre")));
+	public static ArrayList<Evento> getAllEventos() {
+		ArrayList<Evento> listEventos = new ArrayList<Evento>();
+		try {
+			ConexionDB conn = new ConexionDB();
+			String sql = "select id_evento, nombre, id_olimpiada, id_deporte from " + tablename;
+			ResultSet resultado = conn.ejecutarConsulta(sql);
+			while(resultado.next()) {
+				listEventos.add(new Evento(
+						resultado.getInt("id_evento"),
+						OlimpiadasDAO.getOlimpiada(resultado.getInt("id_olimpiada")),
+						DeportesDAO.getDeporte(resultado.getInt("id_deporte")),
+						resultado.getString("nombre")));
+			}
+			resultado.close();
+			conn.cerrarConexion();
+		} catch(SQLException ex) {
+				
 		}
-		conn.cerrarConexion();
-		return listDeportistas;
+		System.out.println(listEventos.toString());
+		return listEventos;
 	}
 	
-	public static Evento getEvento(int id_evento) {
+	public static Evento getEvento(int id_evento) throws SQLException {
 		Evento e = null;
 		ConexionDB conn = new ConexionDB();
 		String sql = "select id_olimpiada, id_deporte, nombre from " + tablename + " where id_evento = " + id_evento;
@@ -38,6 +44,7 @@ public class EventosDAO {
 					DeportesDAO.getDeporte(resultado.getInt("id_deporte")),
 					resultado.getString("nombre"));
 		}
+		resultado.close();
 		conn.cerrarConexion();
 		return e;
 	}
@@ -67,8 +74,8 @@ public class EventosDAO {
 			PreparedStatement ps = conn.getPreparedStatement(sql);
 			ps.setInt(1, e.getId_evento());
 			ps.setString(2, e.getNombre());
-			ps.setInt(3, e.getId_olimpiada());
-			ps.setInt(4, e.getId_deporte());
+			ps.setInt(3, e.getOlimpiada().getId_olimpiada());
+			ps.setInt(4, e.getDeporte().getId_deporte());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
 			conn.cerrarConexion();
@@ -86,8 +93,8 @@ public class EventosDAO {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
 			ps.setString(1, e.getNombre());
-			ps.setInt(2, e.getId_olimpiada());
-			ps.setInt(3, e.getId_deporte());
+			ps.setInt(2, e.getOlimpiada().getId_olimpiada());
+			ps.setInt(3, e.getDeporte().getId_deporte());
 			ps.setInt(4, e.getId_evento());
 			if(ps.executeUpdate() > 0) success = true;
 			ps.close();
@@ -99,3 +106,4 @@ public class EventosDAO {
 		return success;
 	}
 }
+

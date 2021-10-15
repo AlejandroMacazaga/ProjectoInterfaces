@@ -5,27 +5,52 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import auxiliares.Equipo;
 import auxiliares.Olimpiada;
 
 public class OlimpiadasDAO {
 	private final static String tablename = "Olimpiada";
 	
-	public static ArrayList<Olimpiada> getAllOlimpiadas() throws SQLException {
+	public static ArrayList<Olimpiada> getAllOlimpiadas() {
 		ArrayList<Olimpiada> listOlimpiadas = new ArrayList<Olimpiada>();
+		try  {
+			ConexionDB conn = new ConexionDB();
+			String sql = "select id_olimpiada, nombre, anio, temporada, ciudad from " + tablename;
+			ResultSet resultado = conn.ejecutarConsulta(sql);
+			while(resultado.next()) {
+				listOlimpiadas.add(new Olimpiada(
+						resultado.getInt("id_olimpiada"),
+						resultado.getString("nombre"),
+						resultado.getString("anio"),
+						resultado.getString("temporada"),
+						resultado.getString("ciudad")
+						));
+			}
+			resultado.close();
+			conn.cerrarConexion();
+		} catch(SQLException ex) {
+			
+		}
+		System.out.println(listOlimpiadas.toString());
+		return listOlimpiadas;
+	}
+	
+	public static Olimpiada getOlimpiada(int id_olimpiada) throws SQLException {
+		Olimpiada o = null;
 		ConexionDB conn = new ConexionDB();
-		String sql = "select id_olimpiada, nombre, anio, temporada, ciudad from " + tablename;
+		String sql = "select nombre, anio, temporada, ciudad from " + tablename + " where id_olimpiada = " + id_olimpiada;
 		ResultSet resultado = conn.ejecutarConsulta(sql);
-		while(resultado.next()) {
-			listOlimpiadas.add(new Olimpiada(
-					resultado.getInt("id_olimpiada"),
+		if(resultado.next()) {
+			o = new Olimpiada(
+					id_olimpiada,
 					resultado.getString("nombre"),
 					resultado.getString("anio"),
 					resultado.getString("temporada"),
-					resultado.getString("ciudad")
-					));
+					resultado.getString("ciudad"));
 		}
+		resultado.close();
 		conn.cerrarConexion();
-		return listOlimpiadas;
+		return o;
 	}
 	
 	public static boolean removeOlimpiada(Olimpiada o) {
@@ -86,4 +111,6 @@ public class OlimpiadasDAO {
 		}
 		return success;
 	}
+
 }
+

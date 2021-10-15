@@ -10,20 +10,26 @@ import auxiliares.Deportista;
 public class DeportistasDAO {
 	private final static String tablename = "Deportista";
 	
-	public static ArrayList<Deportista> getAllDeportistas() throws SQLException {
+	public static ArrayList<Deportista> getAllDeportistas() {
 		ArrayList<Deportista> listDeportistas = new ArrayList<Deportista>();
-		ConexionDB conn = new ConexionDB();
-		String sql = "select id_deportista, nombre, sexo, peso, altura from " + tablename;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
-		while(resultado.next()) {
-			listDeportistas.add(new Deportista(
-					resultado.getInt("id_deportista"), 
-					resultado.getString("nombre"),
-					resultado.getString("sexo").charAt(0),
-					resultado.getInt("peso"),
-					resultado.getInt("altura")));
+		try {
+			ConexionDB conn = new ConexionDB();
+			String sql = "select id_deportista, nombre, sexo, peso, altura from " + tablename;
+			ResultSet resultado = conn.ejecutarConsulta(sql);
+			while(resultado.next()) {
+				listDeportistas.add(new Deportista(
+						resultado.getInt("id_deportista"), 
+						resultado.getString("nombre"),
+						resultado.getString("sexo").charAt(0),
+						resultado.getInt("peso"),
+						resultado.getInt("altura")));
+			}
+			resultado.close();
+			conn.cerrarConexion();
+		}catch(SQLException ex) {
+			
 		}
-		conn.cerrarConexion();
+		System.out.println(listDeportistas.toString());
 		return listDeportistas;
 	}
 	
@@ -40,6 +46,7 @@ public class DeportistasDAO {
 					resultado.getInt("peso"),
 					resultado.getInt("altura"));
 		}
+		resultado.close();
 		conn.cerrarConexion();
 		return d;
 	}
@@ -103,3 +110,4 @@ public class DeportistasDAO {
 		return success;
 	}
 }
+
