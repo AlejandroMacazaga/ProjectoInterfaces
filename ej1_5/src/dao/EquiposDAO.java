@@ -16,11 +16,13 @@ public class EquiposDAO {
 		ArrayList<Equipo> listEquipos = new ArrayList<Equipo>();
 		try {
 			ConexionDB conn = new ConexionDB();
-		String sql = "select id_equipo, nombre, iniciales from " + tablename;
-			ResultSet resultado = conn.ejecutarConsulta(sql);
+			String sql = "select id_equipo, nombre, iniciales from " + tablename;
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ResultSet resultado = ps.executeQuery();
 			while(resultado.next()) {
 				listEquipos.add(new Equipo(resultado.getInt("id_equipo"), resultado.getString("nombre"), resultado.getString("iniciales")));
 			}
+			ps.close();
 			resultado.close();
 			conn.cerrarConexion();
 		} catch(SQLException ex) {
@@ -33,14 +35,17 @@ public class EquiposDAO {
 	public static Equipo getEquipo(int id_equipo) throws SQLException {
 		Equipo e = null;
 		ConexionDB conn = new ConexionDB();
-		String sql = "select nombre, iniciales from " + tablename + " where id_equipo = " + id_equipo;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
+		String sql = "select nombre, iniciales from " + tablename + " where id_equipo = ?";
+		PreparedStatement ps = conn.getPreparedStatement(sql);
+		ps.setInt(1, id_equipo);
+		ResultSet resultado = ps.executeQuery();
 		if(resultado.next()) {
 			e = new Equipo(
 					id_equipo,
 					resultado.getString("nombre"),
 					resultado.getString("iniciales"));
 		}
+		ps.close();
 		resultado.close();
 		conn.cerrarConexion();
 		return e;

@@ -16,7 +16,8 @@ public class OlimpiadasDAO {
 		try  {
 			ConexionDB conn = new ConexionDB();
 			String sql = "select id_olimpiada, nombre, anio, temporada, ciudad from " + tablename;
-			ResultSet resultado = conn.ejecutarConsulta(sql);
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ResultSet resultado = ps.executeQuery();
 			while(resultado.next()) {
 				listOlimpiadas.add(new Olimpiada(
 						resultado.getInt("id_olimpiada"),
@@ -26,6 +27,7 @@ public class OlimpiadasDAO {
 						resultado.getString("ciudad")
 						));
 			}
+			ps.close();
 			resultado.close();
 			conn.cerrarConexion();
 		} catch(SQLException ex) {
@@ -38,8 +40,9 @@ public class OlimpiadasDAO {
 	public static Olimpiada getOlimpiada(int id_olimpiada) throws SQLException {
 		Olimpiada o = null;
 		ConexionDB conn = new ConexionDB();
-		String sql = "select nombre, anio, temporada, ciudad from " + tablename + " where id_olimpiada = " + id_olimpiada;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
+		String sql = "select nombre, anio, temporada, ciudad from " + tablename + " where id_olimpiada = ?";
+		PreparedStatement ps = conn.getPreparedStatement(sql);
+		ResultSet resultado = ps.executeQuery();
 		if(resultado.next()) {
 			o = new Olimpiada(
 					id_olimpiada,
@@ -48,6 +51,7 @@ public class OlimpiadasDAO {
 					resultado.getString("temporada"),
 					resultado.getString("ciudad"));
 		}
+		ps.close();
 		resultado.close();
 		conn.cerrarConexion();
 		return o;

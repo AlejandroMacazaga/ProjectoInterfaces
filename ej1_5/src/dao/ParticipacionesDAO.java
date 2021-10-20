@@ -14,8 +14,9 @@ static final private String tablename = "Participacion";
 		ArrayList<Participacion> listParticipaciones = new ArrayList<Participacion>();
 		try {
 			ConexionDB conn = new ConexionDB();
-		String sql = "select id_deportista, id_evento, id_equipo, edad, medalla from " + tablename;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
+			String sql = "select id_deportista, id_evento, id_equipo, edad, medalla from " + tablename;
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ResultSet resultado = ps.executeQuery();
 			while(resultado.next()) {
 				listParticipaciones.add(new Participacion(
 						EventosDAO.getEvento(resultado.getInt("id_evento")),
@@ -24,6 +25,7 @@ static final private String tablename = "Participacion";
 						resultado.getInt("edad"),
 						resultado.getString("medalla")));
 			}
+			ps.close();
 			resultado.close();
 			conn.cerrarConexion();
 		} catch(SQLException ex) {

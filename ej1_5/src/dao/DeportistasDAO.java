@@ -15,7 +15,8 @@ public class DeportistasDAO {
 		try {
 			ConexionDB conn = new ConexionDB();
 			String sql = "select id_deportista, nombre, sexo, peso, altura from " + tablename;
-			ResultSet resultado = conn.ejecutarConsulta(sql);
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ResultSet resultado = ps.executeQuery();
 			while(resultado.next()) {
 				listDeportistas.add(new Deportista(
 						resultado.getInt("id_deportista"), 
@@ -24,6 +25,7 @@ public class DeportistasDAO {
 						resultado.getInt("peso"),
 						resultado.getInt("altura")));
 			}
+			ps.close();
 			resultado.close();
 			conn.cerrarConexion();
 		}catch(SQLException ex) {
@@ -36,8 +38,10 @@ public class DeportistasDAO {
 	public static Deportista getDeportista(int id_deportista) throws SQLException {
 		Deportista d = null;
 		ConexionDB conn = new ConexionDB();
-		String sql = "select nombre, sexo, peso, altura from " + tablename + " where id_deportista = " + id_deportista;
-		ResultSet resultado = conn.ejecutarConsulta(sql);
+		String sql = "select nombre, sexo, peso, altura from " + tablename + " where id_deportista = ?";
+		PreparedStatement ps = conn.getPreparedStatement(sql);
+		ps.setInt(1,id_deportista);
+		ResultSet resultado = ps.executeQuery();
 		if(resultado.next()) {
 			d = new Deportista(
 					id_deportista,
@@ -46,6 +50,7 @@ public class DeportistasDAO {
 					resultado.getInt("peso"),
 					resultado.getInt("altura"));
 		}
+		ps.close();
 		resultado.close();
 		conn.cerrarConexion();
 		return d;
@@ -69,7 +74,7 @@ public class DeportistasDAO {
 	}
 	
 	public static boolean addDeportista(Deportista d) {
-		String sql = "insert into "+ tablename + " (nombre, sexo, peso, altura) values (?, ?, ?, ?, ?)";
+		String sql = "insert into "+ tablename + " (nombre, sexo, peso, altura) values (?, ?, ?, ?)";
 		boolean success = false;
 		try {
 			ConexionDB conn = new ConexionDB();

@@ -22,6 +22,10 @@ public class Equipo {
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		return result;
 	}
+	
+	public String toString() {
+		return nombre + ". " + iniciales;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -14,7 +14,8 @@ public class DeportesDAO {
 			try  {
 				ConexionDB conn = new ConexionDB();
 				String sql = "select id_deporte, nombre from " + tablename;
-				ResultSet resultado = conn.ejecutarConsulta(sql);
+				PreparedStatement ps = conn.getPreparedStatement(sql);
+				ResultSet resultado = ps.executeQuery();
 				while(resultado.next()) {
 					listDeportes.add(new Deporte(resultado.getInt("id_deporte"), resultado.getString("nombre")));
 				}
@@ -30,13 +31,16 @@ public class DeportesDAO {
 		public static Deporte getDeporte(int id_deporte) throws SQLException {
 			Deporte d = null;
 			ConexionDB conn = new ConexionDB();
-			String sql = "select nombre from " + tablename + " where id_deporte = " + id_deporte;
-			ResultSet resultado = conn.ejecutarConsulta(sql);
+			String sql = "select nombre from " + tablename + " where id_deporte = ?";
+			PreparedStatement ps = conn.getPreparedStatement(sql);
+			ps.setInt(1, id_deporte);
+			ResultSet resultado = ps.executeQuery();
 			while(resultado.next()) {
 				d = new Deporte(
 						id_deporte,
 						resultado.getString("nombre"));
 			}
+			ps.close();
 			resultado.close();
 			conn.cerrarConexion();
 			return d;
