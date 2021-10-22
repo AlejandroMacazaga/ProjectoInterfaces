@@ -321,13 +321,13 @@ public class VentanaPrincipal extends JFrame {
 					int peso = Integer.parseInt(mapaParametros.get("Peso").getText());
 					int altura = Integer.parseInt(mapaParametros.get("Altura").getText());
 					Deportista d = new Deportista(-1, nombre, sexo, peso, altura);
-
+					System.out.println(d.toString());
 					// TODO: NO SE AÑADE
 					if(DeportistasDAO.addDeportista(d)) {
 						System.out.println("Se ha añadido");
 					}
 				} catch(Exception e) {
-					mensajeErrorVacio();
+					mensajeError();
 				}
 				mdl.clear();
 				ArrayList<Deportista> listaDeportistas = DeportistasDAO.getAllDeportistas();
@@ -467,8 +467,9 @@ public class VentanaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					// TODO: Equipo a añadir
-					Equipo e;
-
+					String nombre = mapaParametros.get("Nombre").getText();
+					String iniciales = mapaParametros.get("Nombre").getText();
+					Equipo e = new Equipo(-1, nombre, iniciales);
 					if(EquiposDAO.addEquipo(e)) {
 						System.out.println("Se ha añadido");
 					}
@@ -498,14 +499,17 @@ public class VentanaPrincipal extends JFrame {
 				}
 				else {
 					// GET PARAMS
-					 
 					
-					if(true) { // CHECK IF THEY OK
+					String nombre = mapaParametros.get("Nombre").getText();
+					String iniciales = mapaParametros.get("Nombre").getText();
+					
+					if(nombre.trim().equals("") || iniciales.trim().equals("")) { // CHECK IF THEY OK
 						mensajeErrorVacio();
 					}
 					else {
 						// ASIGN THEM TO selectedEquipo
-						
+						selectedEquipo.setNombre(nombre);
+						selectedEquipo.setIniciales(iniciales);
 						EquiposDAO.modifyEquipo(selectedEquipo);
 						ArrayList<Equipo> listaEquipos = EquiposDAO.getAllEquipos();
 						mdl.clear();
@@ -587,6 +591,92 @@ public class VentanaPrincipal extends JFrame {
 		removeAllActionListeners(btnAniadir);
 		removeAllActionListeners(btnEliminar);
 		removeAllActionListeners(btnModificar);
+		
+		btnAniadir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					// TODO: Equipo a añadir
+					String nombre = mapaParametros.get("Nombre").getText();
+					String temporada = mapaParametros.get("Temporada").getText();
+					String ciudad = mapaParametros.get("Ciudad").getText();
+					String anio = mapaParametros.get("Año").getText();
+					Olimpiada o = new Olimpiada(-1, nombre, anio, temporada, ciudad);
+					if(OlimpiadasDAO.addOlimpiada(o)) {
+						System.out.println("Se ha añadido");
+					}
+				} catch(Exception e) {
+					mensajeErrorVacio();
+				}
+				mdl.clear();
+				ArrayList<Olimpiada> listaOlimpiadas = OlimpiadasDAO.getAllOlimpiadas();
+				mdl.clear();
+				listaOlimpiadas.forEach(olimpiada -> {
+					mdl.addElement(olimpiada);
+				});
+				repaint();
+				revalidate();
+			}
+			
+		});
+		
+		btnModificar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				Olimpiada selectedOlimpiada = (Olimpiada) lst.getSelectedValue();
+				if(selectedOlimpiada == null) {
+					JOptionPane.showMessageDialog(null, "Necesitas tener seleccionado el objeto a eliminar!!!");
+				}
+				else {
+					// GET PARAMS
+					
+					
+					if(true) { // CHECK IF THEY OK
+						mensajeErrorVacio();
+					}
+					else {
+						// ASIGN THEM TO selectedEquipo
+						
+						OlimpiadasDAO.modifyOlimpiada(selectedOlimpiada);
+						ArrayList<Olimpiada> listaOlimpiadas = OlimpiadasDAO.getAllOlimpiadas();
+						mdl.clear();
+						listaOlimpiadas.forEach(olimpiada -> {
+							mdl.addElement(olimpiada);
+						});
+					}
+				}
+				repaint();
+				revalidate();
+			}
+			
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Olimpiada selectedOlimpiada = (Olimpiada) lst.getSelectedValue();
+				if(selectedOlimpiada == null) {
+					JOptionPane.showMessageDialog(null, "Necesitas tener seleccionado el objeto a eliminar!!!");
+				}
+				else {
+					if(!OlimpiadasDAO.removeOlimpiada(selectedOlimpiada)) {
+						JOptionPane.showMessageDialog(null, "Por favor, rellena todos los valores!!!");
+					}
+				}
+				ArrayList<Olimpiada> listaOlimpiadas = OlimpiadasDAO.getAllOlimpiadas();
+				mdl.clear();
+				listaOlimpiadas.forEach(equipo-> {
+					mdl.addElement(equipo);
+				});
+				repaint();
+				revalidate();
+			}
+			
+		});
 	}
 	
 	
@@ -737,6 +827,10 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void mensajeErrorVacio() {
 		JOptionPane.showMessageDialog(null, "Por favor, rellena todos los valores!!!");
+	}
+	
+	private void mensajeError() {
+		JOptionPane.showMessageDialog(null, "Error generico.");
 	}
 	
 	private void mensajeErrorBorrar() {

@@ -80,14 +80,18 @@ public class DeportistasDAO {
 			ConexionDB conn = new ConexionDB();
 			PreparedStatement ps = conn.getPreparedStatement(sql);
 			ps.setString(1, d.getNombre());
+			System.out.println(d.getSexo());
 			ps.setString(2, d.getSexo() + "");
 			ps.setInt(3, d.getPeso());
 			ps.setInt(4, d.getAltura());
 			if(ps.executeUpdate() > 0) success = true;
+			System.out.println(success);
 			ps.close();
 			conn.cerrarConexion();
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("SQL EXCEPTION");
 			return false;
 		}
 		return success;
