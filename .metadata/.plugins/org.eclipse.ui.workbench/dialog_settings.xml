@@ -15,4 +15,6 @@
 		<item key="EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL" value="true"/>
 		<item key="EditorSelectionDialog.STORE_ID_DESCR" value="SceneBuilder"/>
 	</section>
+	<section name="ImportExportAction">
+	</section>
 </section>
