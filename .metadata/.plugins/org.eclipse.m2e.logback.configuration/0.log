@@ -456,3 +456,6 @@ java.nio.file.AccessDeniedException: /home/dm2/eclipse-workspace-al/.git/index.l
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:594) ~[org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar:na]
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1465) ~[org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar:na]
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1438) ~[org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar:na]
+2021-10-29 11:23:11,146 [Worker-0: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2021-11-02 13:02:50,025 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2021-11-03 12:10:07,303 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
