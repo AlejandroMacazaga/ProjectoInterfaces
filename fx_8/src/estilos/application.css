@@ -1,0 +1,19 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+* {
+    -fx-font-family:Verdana;
+}
+.btnAdd {
+    -fx-color:lightblue;
+}
+
+.btnModify {
+    -fx-color:lightblue;
+}
+
+.btnRemove {
+    -fx-color:lightblue;
+}
+
+.gridpane {
+    -fx-background-color:#81f79a;
+}

@@ -44,4 +44,5 @@
     <fullyQualifiedTypeName name="javafx.stage.Window"/>
     <fullyQualifiedTypeName name="javafx.collections.transformation.FilteredList"/>
     <fullyQualifiedTypeName name="javafx.collections.transformation.SortedList"/>
+    <fullyQualifiedTypeName name="dao.PersonasDAO"/>
 </qualifiedTypeNameHistroy>
